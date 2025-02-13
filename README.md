@@ -1,10 +1,10 @@
 # DSA-Path
 
-![GitHub contributors](https://img.shields.io/github/contributors/YurioDev/DSA-Path?style=for-the-badge)
-![Forks](https://img.shields.io/github/forks/YurioDev/DSA-Path?style=for-the-badge)
-![Stars](https://img.shields.io/github/stars/YurioDev/DSA-Path?style=for-the-badge)
-![Issues](https://img.shields.io/github/issues/YurioDev/DSA-Path?style=for-the-badge)
-![License](https://img.shields.io/github/license/YurioDev/DSA-Path?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/YurioDev/DSA-path?style=for-the-badge)
+![Forks](https://img.shields.io/github/forks/YurioDev/DSA-path?style=for-the-badge)
+![Stars](https://img.shields.io/github/stars/YurioDev/DSA-path?style=for-the-badge)
+![Issues](https://img.shields.io/github/issues/YurioDev/DSA-path?style=for-the-badge)
+![License](https://img.shields.io/github/license/YurioDev/DSA-path?style=for-the-badge)
 
 The **YuriODev Comprehensive DSA (Data Structures & Algorithms) Course** is designed to provide learners with a comprehensive understanding of Data Structures & Algorithms. 
 
@@ -27,14 +27,14 @@ The **YuriODev Comprehensive DSA (Data Structures & Algorithms) Course** is desi
 | **Day 12** | Hashing Techniques                                     | Hash Functions & Collision Resolution                | - Understand the principles behind hash functions<br>- Learn methods for collision resolution                                                                                  | Feb 24, 2025  | ❌  |
 | **Day 13** | Trees & Binary Search Trees                            | Tree Structures: Basics & Binary Trees               | - Understand tree structures<br>- Implement binary trees and basic traversals                                                                                                  | Feb 25, 2025  | ❌  |
 | **Day 14** | Trees & Binary Search Trees                            | Binary Search Trees & Advanced Traversals            | - Master BST operations (insertion, deletion, search)<br>- Explore advanced traversal strategies                                                                                 | Feb 26, 2025  | ❌  |
-| **Day 15** | DSA-PathAdvanced Trees & Heaps                         | Self-Balancing Trees & B-Trees                       | - Understand self-balancing mechanisms<br>- Explore AVL, Red-Black trees, and B-trees for disk-based data structures                                                             | Feb 27, 2025  | ❌  |
-| **Day 16** | DSA-PathAdvanced Trees & Heaps                         | Heaps, Priority Queues, & Heap Sort                  | - Learn heap properties and priority queue operations<br>- Implement heap sort                                                                                                 | Feb 28, 2025  | ❌  |
+| **Day 15** | DSA-pathAdvanced Trees & Heaps                         | Self-Balancing Trees & B-Trees                       | - Understand self-balancing mechanisms<br>- Explore AVL, Red-Black trees, and B-trees for disk-based data structures                                                             | Feb 27, 2025  | ❌  |
+| **Day 16** | DSA-pathAdvanced Trees & Heaps                         | Heaps, Priority Queues, & Heap Sort                  | - Learn heap properties and priority queue operations<br>- Implement heap sort                                                                                                 | Feb 28, 2025  | ❌  |
 | **Day 17** | Graphs – Fundamentals & Traversal                      | Graph Representations                                | - Understand graph definitions and representations<br>- Implement adjacency lists and matrices                                                                                 | Mar 1, 2025   | ❌  |
 | **Day 18** | Graphs – Fundamentals & Traversal                      | Graph Traversal: DFS & BFS                           | - Implement depth-first and breadth-first search algorithms<br>- Compare recursive and iterative approaches                                                                    | Mar 2, 2025   | ❌  |
 | **Day 19** | Graph Algorithms – Shortest Paths                      | Dijkstra's & Bellman-Ford Algorithms                 | - Implement shortest path algorithms<br>- Analyze strengths and limitations of each                                                                                            | Mar 3, 2025   | ❌  |
 | **Day 20** | Graph Algorithms – Shortest Paths                      | A* Algorithm & Heuristic Search                      | - Understand heuristic functions in pathfinding<br>- Implement A* search for grid-based problems                                                                                   | Mar 4, 2025   | ❌  |
-| **Day 21** | DSA-PathAdvanced Graph Algorithms                      | Minimum Spanning Trees & Topological Sorting         | - Implement MST algorithms and understand their applications<br>- Learn topological sorting for dependency resolution                                                             | Mar 5, 2025   | ❌  |
-| **Day 22** | DSA-PathAdvanced Graph Algorithms                      | Strongly Connected Components & Network Flow         | - Explore algorithms for detecting SCC and modeling network flows<br>- Apply these techniques to resource allocation problems                                                    | Mar 6, 2025   | ❌  |
+| **Day 21** | DSA-pathAdvanced Graph Algorithms                      | Minimum Spanning Trees & Topological Sorting         | - Implement MST algorithms and understand their applications<br>- Learn topological sorting for dependency resolution                                                             | Mar 5, 2025   | ❌  |
+| **Day 22** | DSA-pathAdvanced Graph Algorithms                      | Strongly Connected Components & Network Flow         | - Explore algorithms for detecting SCC and modeling network flows<br>- Apply these techniques to resource allocation problems                                                    | Mar 6, 2025   | ❌  |
 | **Day 23** | Greedy & Dynamic Programming                           | Greedy Algorithms & Their Proofs                     | - Understand the greedy strategy and its limitations<br>- Prove correctness for selected greedy algorithms                                                                        | Mar 7, 2025   | ❌  |
 | **Day 24** | Greedy & Dynamic Programming                           | Dynamic Programming Fundamentals                   | - Learn DP concepts and techniques<br>- Distinguish between memoization and tabulation approaches                                                                                  | Mar 8, 2025   | ❌  |
 | **Day 25** | String Algorithms & Pattern Matching                   | String Search Techniques: Naive, KMP, & Rabin-Karp     | - Compare various string search methods<br>- Implement efficient pattern matching algorithms                                                                                    | Mar 9, 2025   | ❌  |
@@ -63,7 +63,7 @@ The **YuriODev Comprehensive DSA (Data Structures & Algorithms) Course** is desi
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/YurioDev/DSA-Path.git
+   git clone https://github.com/YurioDev/DSA-path.git
    ```
 2. **Start learning**:
    - Open the theory section to get started.
@@ -102,7 +102,7 @@ To ensure a smooth learning experience, you may use the following tools:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/YurioDev/DSA-Path.git
+   git clone https://github.com/YurioDev/DSA-path.git
    ```
 2. **Run the autograding tests**:
    - Every time you update your code and push changes, tests will run automatically using GitHub Actions.
