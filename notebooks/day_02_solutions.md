@@ -119,7 +119,7 @@ Since none of the provided choices ($\log N$, $N$, $N^2$, $2^N$, $N \log N$) mat
 </div>
 </details>
 
-### Exercise 3: Quicksort Worst-Case Complexity
+### Exercise 3: Quicksort Worst-Case Complexity 📊
 
 > **Question:**  
 > Evaluate the worst-case time complexity of quicksort on an array of $N$ elements using the following process:
@@ -156,7 +156,7 @@ $\boxed{O(N^2)}$.
 </div>
 </details>
 
-### Exercise 4: Sum of Digits Complexity
+### Exercise 4: Sum of Digits Complexity 📊
 
 > **Question:**  
 > Evaluate the time complexity of the following function that computes the sum of the digits for every number in an array of size $N$ when each number is at most $C$.
@@ -223,7 +223,7 @@ $\boxed{O(N^2)}$.
 </details>
 
 
-### Exercise 5: Asymptotic Complexity with a While and For Loop
+### Exercise 5: Asymptotic Complexity with a While and For Loop 📊
 
 > **Question:**  
 > Evaluate the time complexity of the following code snippet, where $a$ is an array of size $N$:
@@ -306,66 +306,84 @@ $\boxed{O(N^2)}$
 </div>
 </details>
 
-### Exercise 6: Prime Factors Complexity
+### Exercise 6: Prime Factors Complexity 📊
 
-**Question:**  
-Evaluate the time complexity of the following function that computes the prime factors of a number $ x $. Let $ C $ be an upper bound on $ x $ (i.e., initially, $ x \le C $).
+> **Question:**  
+> Evaluate the time complexity of the following function that computes the prime factors of a number $ x $. Let $ C $ be an upper bound on $ x $ (i.e., initially, $ x \le C $).
 
-```cpp
-#include <vector>
-std::vector<int> primes(int x) {
-    std::vector<int> result;
-    int i = 2;
-    while (i * i <= x) {
-        while (x % i == 0) {
-            result.push_back(i);
-            x /= i;
-        }
-        ++i;
-    }
-    if (x != 1) {
-        result.push_back(x);
-    }
-    return result;
-}
-```
+> ```cpp
+> #include <vector>
+> std::vector<int> primes(int x) {
+>     std::vector<int> result;
+>     int i = 2;
+>     while (i * i <= x) {
+>         while (x % i == 0) {
+>             result.push_back(i);
+>             x /= i;
+>         }
+>         ++i;
+>     }
+>     if (x != 1) {
+>         result.push_back(x);
+>     }
+>     return result;
+> }
+> ```
 
-```python
-def primes(x):
-    result = []
-    i = 2
-    while i * i <= x:
-        while x % i == 0:
-            result.append(i)
-            x //= i
-        i += 1
-    if x != 1:
-        result.append(x)
-    return result
-```
+> ```python
+> def primes(x):
+>     result = []
+>     i = 2
+>     while i * i <= x:
+>         while x % i == 0:
+>             result.append(i)
+>             x //= i
+>         i += 1
+>     if x != 1:
+>         result.append(x)
+>     return result
+> ```
 
-**Answer Options:**
+> **Answer Options:**
+> 
+> 1. $O(C \log C)$
+> 2. $O(\log C)$
+> 3. $O(C + \log C)$
+> 4. $O(C)$
 
-- $O(C \log C)$
-- $O(\log C)$
-- $O(C + \log C)$
-- $O(C)$
+<details close>
+<summary><b>Show Solution</b></summary>
+<div markdown="1">
 
 **Explanation:**  
-- **Outer Loop:** Runs while $ i^2 \le x $. Since $ x \le C $ and $ x $ decreases over time, the outer loop runs at most $ O(C) $ times.
-- **Inner Loop:** Each iteration reduces $ x $ by at least a factor of 2 (because $ i \ge 2 $), so the total number of inner loop iterations is $ O(\log C) $.
-- The dominant factor is $ O(C) $.
+
+1. **Outer Loop Analysis:**  
+   The outer `while` loop increases $i$ by 1 on each iteration and continues as long as $i^2 \le x$. Since the initial value of $x$ does not exceed $C$ (and $x$ only decreases during execution), the outer loop will perform at most $O(C)$ iterations.
+
+2. **Inner Loop Analysis:**  
+   Each time the inner loop is executed, the value $x$ is divisible by $i$ and is divided by $i$. Because $i \ge 2$, every execution of the inner loop reduces $x$ by at least a factor of 2. Therefore, the total number of iterations of the inner loop over the entire function is at most $O(\log C)$.
+
+3. **Overall Complexity:**  
+   The dominant work comes from the outer loop, which is $O(C)$, while the inner loop contributes only an additional $O(\log C)$ iterations in total. Since $O(C)$ grows asymptotically faster than $O(\log C)$, the overall time complexity is:
+
+   $$
+   O(C) + O(\log C) = O(C).
+   $$
+
+
 
 **Final Answer:**  
 $\boxed{O(C)}$
 
+</div>
+</details>
 
 
 ### Exercise 7: Counting Sort Complexity
 
 > **Question:**  
 > Let $a$ be an array of $N$ non-negative integers such that every element does not exceed $C$. Evaluate the time complexity of the following counting sort procedure.
-> 
+
 > ```cpp
 > #include <vector>
 > #include <algorithm>
@@ -386,7 +404,7 @@ $\boxed{O(C)}$
 >     }
 > }
 > ```
-> ---
+
 > ```python
 > def sort(a):
 >     N = len(a)
@@ -400,6 +418,7 @@ $\boxed{O(C)}$
 >             pos += 1
 >             count[i] -= 1
 > ```
+
 > **Answer Options:**
 > 
 > 1. $O(NC)$  
@@ -407,23 +426,46 @@ $\boxed{O(C)}$
 > 3. $O(NC + C^2)$  
 > 4. $O(N + C)$  
 > 5. $O(N)$
-> 
-> **Explanation:**  
-> Finding the maximum element takes $O(N)$ time, the counting loop runs in $O(N)$, and the reconstruction loop iterates over a count array of size $O(C)$. Hence, the total time complexity is:
-> $$
-> O(N) + O(N) + O(C) = O(N + C).
-> $$
-> 
-> **Final Answer:**  
-> $\boxed{O(N + C)}$.
 
+<details close>
+<summary><b>Show Solution</b></summary>
+<div markdown="1">
 
+**Explanation:**  
 
-### Exercise 8: Asymptotic Time Complexity of a Hash Function
+This problem presents the code for sorting an array of non-negative integers using counting sort.
+
+1. **Finding the Maximum Element:**  
+   The function `std::max_element` (or `max(a)` in Python) scans the array once, so it runs in $O(N)$ time.
+
+2. **Counting Occurrences:**  
+   The first `for` loop iterates through each element of the array and increments the corresponding entry in the `count` array. This loop performs $O(N)$ operations.
+
+3. **Reconstructing the Sorted Array:**  
+   - The outer `for` loop iterates over the `count` array. Since the values in the original array do not exceed $C$, the `count` array has at most $C + 1$ elements. Thus, the outer loop runs $O(C)$ times.
+   - The inner `while` loop decreases the value of `count[i]` until it reaches zero. Notice that for each element in the original array, exactly one increment was made in the `count` array. Therefore, across the entire execution, the total number of iterations of the inner `while` loop is exactly $N$.
+
+4. **Total Complexity:**  
+   - The maximum element search: $O(N)$
+   - The counting loop: $O(N)$  
+   - The reconstruction loop: $O(C)$ (outer loop) + $O(N)$ (total inner loop iterations)  
+     
+   Adding these up, the overall time complexity is:
+   $$
+   O(N) + O(N) + O(C) = O(N + C).
+   $$
+
+**Final Answer:**  
+$\boxed{O(N + C)}$
+
+</div>
+</details>
+
+### Exercise 8: Asymptotic Time Complexity of a Hash Function 📊
 
 > **Question:**  
 > Evaluate the asymptotic time complexity of the following hash function.
-> 
+
 > ```cpp
 > long long f(int N) {
 >     int P = 101;
@@ -438,7 +480,7 @@ $\boxed{O(C)}$
 >     return hash;
 > }
 > ```
-> ---
+
 > ```python
 > def f(N):
 >     P = 101
@@ -450,29 +492,62 @@ $\boxed{O(C)}$
 >         N //= 2
 >     return hash
 > ```
+
 > **Answer Options:**
 > 
 > 1. $O(NP)$  
 > 2. $O(N)$  
 > 3. $O(N^2)$  
 > 4. $O(N \log N)$
-> 
-> **Explanation:**  
-> The outer loop decreases $N$ by a factor of 2 each time (i.e. $O(\log N)$ iterations), and the inner loop executes $N + \frac{N}{2} + \frac{N}{4} + \dots$, which sums to at most $2N$. Therefore, the overall time complexity is:
-> $$
-> O(N).
-> $$
-> 
-> **Final Answer:**  
-> $\boxed{O(N)}$.
+
+<details close>
+<summary><b>Show Solution</b></summary>
+<div markdown="1">
+
+**Explanation:**  
+
+
+1. **Outer Loop:**  
+   On each iteration of the outer `while` loop, $N$ is halved (i.e. $N \gets N/2$). This gives us:
+   $$
+   O(\log N) \text{ iterations}.
+   $$
+   However, this does not directly imply that the total time is $O(N \log N)$.
+
+2. **Inner Loop:**  
+   For each iteration of the outer loop:
+   - **First iteration:** the inner loop runs \(N\) times.
+   - **Second iteration:** the inner loop runs \(N/2\) times.
+   - **Third iteration:** it runs \(N/4\) times, and so on.
+
+   The total number of iterations of the inner loop across all iterations of the outer loop is:
+   $$
+   N + \frac{N}{2} + \frac{N}{4} + \dots + \frac{N}{2^k},
+   $$
+   where $k = \log_2 N$. This geometric series sums to at most:
+   $$
+   N \cdot \left(1 + \frac{1}{2} + \frac{1}{4} + \dots\right) \le 2N.
+   $$
+
+3. **Total Time Complexity:**  
+   Since the overall work done is the sum of the inner loop iterations, the total time complexity is:
+   $$
+   O(N) + O\left(\frac{N}{2}\right) + O\left(\frac{N}{4}\right) + \dots = O(2N) = O(N).
+   $$
+
+**Final Answer:**  
+$\boxed{O(N)}$
+
+</div>
+</details>
 
 
 
-### Exercise 9: Merge Sort Complexity for Maintaining a Sorted Set
+### Exercise 9: Merge Sort Complexity for Maintaining a Sorted Set 📊
 
 > **Question:**  
 > Suppose we maintain a sorted set of numbers using a dynamically expanding array (e.g., a `std::vector` or Python `list`). When adding a number, we append it to the end and then sort the array using merge sort. Evaluate the time complexity of performing $N$ addition operations.
-> 
+
 > **Answer Options:**
 > 
 > 1. $O(N^3)$  
@@ -480,28 +555,46 @@ $\boxed{O(C)}$
 > 3. $O(N^2 \log N)$  
 > 4. $O(N^2)$  
 > 5. $O(N)$
-> 
-> **Explanation:**  
-> After the $K$-th insertion, merge sort takes $O(K \log K)$ time. Over $N$ insertions, the total work is:
-> $$
-> \sum_{K=1}^{N} O(K \log K).
-> $$
-> It can be shown that this sum is at least:
-> $$
-> O\left(N^2 \log N\right)
-> $$
-> (by lower-bounding over the larger values of $K$).
-> 
-> **Final Answer:**  
-> $\boxed{O(N^2 \log N)}$.
 
+<details close>
+<summary><b>Show Solution</b></summary>
+<div markdown="1">
 
+**Explanation:**  
+
+1. **Merge Sort Complexity:**  
+   Merge sort on an array of $K$ elements runs in $O(K \log K)$ time.
+
+2. **Sorting on Each Insertion:**  
+   When adding an element, after appending it, we sort the array. At the $K$-th insertion (for $K$ from 1 to $N$), the array size is $K$, so the sorting operation takes $O(K \log K)$ time.
+
+3. **Total Time Over $N$ Insertions:**  
+   We perform this sorting step for every value of $K$ from 1 up to $N$. Therefore, the overall running time is:
+   $$
+   O\left(\sum_{K=1}^{N} K \log K\right).
+   $$
+
+4. **Estimating the Sum:**  
+   We can lower-bound the sum by considering the terms for $K$ from $N/2$ to $N$:
+   $$
+   \sum_{K=1}^{N} K \log K \ge \sum_{K=\frac{N}{2}}^{N} K \log K.
+   $$
+   In the range $K \in \left[\frac{N}{2}, N\right]$, each $K$ is at least $\frac{N}{2}$ and $\log K$ is at least $\log \frac{N}{2}$. There are approximately $\frac{N}{2}$ such terms, so:
+   $$
+   \sum_{K=\frac{N}{2}}^{N} K \log K \ge \frac{N}{2} \cdot \frac{N}{2} \cdot \log\left(\frac{N}{2}\right) = O\left(N^2 \log N\right).
+   $$
+
+**Final Answer:**  
+$\boxed{O(N^2 \log N)}$
+
+</div>
+</details>
 
 ### Exercise 10: Insertion Sort Complexity for Maintaining a Sorted Set
 
 > **Question:**  
 > Suppose we maintain a sorted set of numbers using a dynamically expanding array. When adding a number, we append it to the array and then sort it using insertion sort. Evaluate the time complexity of performing $N$ addition operations.
-> 
+
 > **Answer Options:**
 > 
 > 1. $O(N^3)$  
@@ -509,39 +602,31 @@ $\boxed{O(C)}$
 > 3. $O(N^2 \log N)$  
 > 4. $O(N^2)$  
 > 5. $O(N)$
-> 
-> **Explanation:**  
-> Insertion sort takes linear time on a nearly sorted array. For the $K$-th insertion, it runs in $O(K)$ time. Thus, the total time over $N$ insertions is:
-> $$
-> \sum_{K=1}^{N} O(K) = O\left(\frac{N(N+1)}{2}\right) = O(N^2).
-> $$
-> 
-> **Final Answer:**  
-> $\boxed{O(N^2)}$.
+
+<details close>
+<summary><b>Show Solution</b></summary>
+<div markdown="1">
+
+**Explanation:**  
 
 
 
-## 5. Additional Discussion: Adding vs. Multiplying Complexities
 
-When analyzing code with nested loops, it's important to determine whether the work done by inner loops should be **added** to or **multiplied** by the work done by the outer loops.
+1. **Insertion Sort on a Nearly Sorted Array:**  
+   After each addition, we sort the array using insertion sort. When the array is already sorted except for the new element at the end, insertion sort works in linear time, i.e., $O(K)$ for an array of size $K$.
 
-- **Addition of Complexities:**  
-  If the inner loop's total work is **summed over all iterations** of the outer loop (i.e., the number of inner iterations varies and is not fixed per outer iteration), then you add the complexities.  
-  For example, if the outer loop runs $ O(C) $ times and the total work of the inner loops over all iterations is $ O(\log C) $, the overall complexity is:
-  $$
-  O(C) + O(\log C) = O(C).
-  $$
+2. **Cost for Each Insertion:**  
+   Suppose that after $K-1$ insertions the array is sorted. When we add the $K$-th element, the array has $K$ elements and the insertion sort takes $O(K)$ time in the worst case.
 
-- **Multiplication of Complexities:**  
-  If every iteration of the outer loop executes the inner loop a fixed number of times (or a function of $ n $ independent of the outer loop's progress), then you multiply the complexities.  
-  For example, if an outer loop runs $ O(N) $ times and each iteration does $ O(\log M) $ work, then the total is:
-  $$
-  O(N \log M).
-  $$
-
-The key is whether the inner loop's iterations **accumulate** across the outer loop (additive) or are executed **for every** outer iteration (multiplicative).
+3. **Total Cost Over $N$ Insertions:**  
+   We perform this sorting step for each insertion from $K = 1$ to $N$. The total time is:
+   $$
+   O(1) + O(2) + \dots + O(N) = O\left(\sum_{K=1}^{N} K\right) = O\left(\frac{N(N+1)}{2}\right) = O(N^2).
+   $$
 
 
+**Final Answer:**  
+$\boxed{O(N^2)}$
 
-This concludes the refined markdown document, which connects all topics—from basic insertion sort analysis to various asymptotic complexity exercises and discussions on combining and multiplying complexities.
-```
+</div>
+</details>
