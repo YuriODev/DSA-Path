@@ -194,6 +194,7 @@ $\boxed{O(N^2)}$.
 > 4. $O(N \log N)$  
 > 5. $O(N C)$
 
+
 <details close>
 <summary><b>Show Solution</b></summary>
 <div markdown="1">
