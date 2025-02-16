@@ -227,7 +227,7 @@ $\boxed{O(N^2)}$.
 
 > **Question:**  
 > Evaluate the time complexity of the following code snippet, where $a$ is an array of size $N$:
-> 
+
 > ```cpp
 > int f(int N, int *a) {
 >     int answer = 0;
@@ -247,7 +247,7 @@ $\boxed{O(N^2)}$.
 >     return answer;
 > }
 > ```
-> ---
+
 > ```python
 > def f(N, a):
 >     answer = 0
@@ -269,17 +269,42 @@ $\boxed{O(N^2)}$.
 > 3. $O(N^2 + N)$  
 > 4. $O(N)$  
 > 5. $O(N \log N)$
-> 
-> **Explanation:**  
-> The inner loop runs roughly $\lceil (R - L + 1)/5 \rceil$ times, which is $O(R-L)$. The outer loop decreases the interval $(R-L)$ by one each time. In the worst-case, summing over all iterations gives:
-> $$
-> O((N-1) + (N-2) + \dots + 1) = O(N^2).
-> $$
-> 
-> **Final Answer:**  
-> $\boxed{O(N^2)}$.
+
+<details close>
+<summary><b>Show Solution</b></summary>
+<div markdown="1">
 
 
+**Explanation:**
+
+1. **Inner `for` Loop:**  
+   The exact number of operations performed by the inner loop is  
+   $$
+   \left\lceil \frac{R - L + 1}{5} \right\rceil.
+   $$  
+   However, since we are interested only in the asymptotic complexity, we can say that the number of operations in the inner loop is, up to a constant factor, proportional to $(R - L)$ (here, the constant is approximately $1/5$). Denote this constant by $C$; then the inner loop performs at most $C \cdot (R - L)$ operations.
+
+2. **Outer `while` Loop:**  
+   Now, let’s analyze how the value of $(R - L)$ changes. Notice that regardless of the value of `answer`, at each iteration of the outer loop the difference $(R - L)$ decreases by 1, because either $L$ is increased by 1 or $R$ is decreased by 1. Initially, $(R - L) = N - 1$.
+
+3. **Total Work:**  
+   - On the first iteration of the outer loop, the inner loop performs at most $C \cdot (N - 1)$ operations.
+   - On the second iteration, it performs at most $C \cdot (N - 2)$ operations.
+   - And so on, until the difference reaches 0.
+   
+   Therefore, the total number of operations is bounded by:
+   
+   $$
+   C \cdot \left[(N - 1) + (N - 2) + \dots + 2 + 1\right] = C \cdot \frac{N \cdot (N - 1)}{2}.
+   $$
+   
+   This summation is $O(N^2)$.
+ 
+**Final Answer:**  
+$\boxed{O(N^2)}$
+
+</div>
+</details>
 
 ### Exercise 6: Prime Factors Complexity
 
