@@ -209,8 +209,8 @@ $\boxed{O(N^2)}$
      
    $$O\left(N \cdot \log C\right).$$  
 
-> **Final Answer:**  
-> $\boxed{O(N \log C)}$
+**Final Answer:**  
+$\boxed{O(N \log C)}$
 
 </div>
 </details>
