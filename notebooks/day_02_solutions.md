@@ -10,7 +10,7 @@ This document provides a comprehensive overview of asymptotic analysis, includin
 
 
 > **Question:**  
-> Evaluate the asymptotic complexity of the `Populate` function below, without assuming anything about the magnitudes of $ M $ and $ N $.
+> Evaluate the asymptotic complexity of the `Populate` function below, without assuming anything about the magnitudes of $M$ and $N$.
 
 > ```cpp
 > // C++
