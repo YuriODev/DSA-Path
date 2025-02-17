@@ -49,9 +49,7 @@ This document provides a comprehensive overview of asymptotic analysis, includin
 - Each insertion takes **$O(\log(\text{current size}))$** time. As we insert elements, the set size grows from $M$ up to $M + N$.  
 - Therefore, the time for the $i$-th insertion is roughly $\log(M + i)$. Summing this from $i = 0$ to $i = N - 1$ yields approximately:
 
-  $$
-    \sum_{i=0}^{N-1} \log(M + i) \;\approx\; O\bigl(N \log(M + N)\bigr).
-  $$
+$$\sum_{i=0}^{N-1} \log(M + i) \;\approx\; O\bigl(N \log(M + N)\bigr).$$
 
 
 **Final Answer:**  
