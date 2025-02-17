@@ -494,10 +494,10 @@ $\boxed{O(N + C)}$
 
 
 1. **Outer Loop:**  
-   On each iteration of the outer `while` loop, $N$ is halved (i.e. $N \gets N/2$). This gives us:
-   $$
-   O(\log N) \text{ iterations}.
-   $$
+   On each iteration of the outer `while` loop, $N$ is halved (i.e. $N \gets N/2$). This gives us:  
+   
+   $$O(\log N) \text{ iterations}.$$  
+   
    However, this does not directly imply that the total time is $O(N \log N)$.
 
 2. **Inner Loop:**  
