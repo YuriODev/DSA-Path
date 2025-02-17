@@ -100,18 +100,14 @@ $\boxed{O(N \log(M + N))}$
 - Let $T(N)$ denote the time required to compute $\text{fib}(N)$.
   - For $N = 0$ or $N = 1$, the function returns immediately, so $T(0) = T(1) = O(1)$.
   - For $N \ge 2$, the recurrence is:
-    $$
-      T(N) = T(N-1) + T(N-2).
-    $$
+    $$T(N) = T(N-1) + T(N-2).$$
 - It can be shown that $T(N)$ essentially **equals** $F_N$, where $F_N$ is the $N$-th Fibonacci number.
 - The Fibonacci sequence grows **exponentially**, with a base of approximately $\tfrac{1 + \sqrt{5}}{2} \approx 1.618\ldots$ (the golden ratio $\phi$).  
   - Therefore, the time complexity is about $\phi^N \approx 1.618^N$, which is close to $1.62^N$.
 
 Hence, the **actual** asymptotic running time is on the order of:
 
-$$
-\boxed{O(1.62^N).}
-$$
+$$\boxed{O(1.62^N)}$$
 
 Since none of the provided choices ($\log N$, $N$, $N^2$, $2^N$, $N \log N$) matches $O(1.62^N)$, **no given option** is correct.
 </div>
@@ -140,16 +136,12 @@ Since none of the provided choices ($\log N$, $N$, $N^2$, $2^N$, $N \log N$) mat
 
 **Explanation:**  
 In the worst-case scenario the pivot always partitions the array into sizes 0 and $N-1$. In one of the worst cases, the pivot chosen is always the smallest element in the array. After partitioning an array of size $N$, the recurrence becomes:
-$$
-T(N) = T(N-1) + O(N)
-$$
+$$T(N) = T(N-1) + O(N)$$
 Summing this over $N$ leads to:
-$$
-O(N) + O(N-1) + \dots + O(1) = O(N^2).
-$$
+$$O(N) + O(N-1) + \dots + O(1) = O(N^2).$$
 
 **Final Answer:**  
-$\boxed{O(N^2)}$.
+$\boxed{O(N^2)}$
 
 </div>
 </details>
@@ -200,13 +192,9 @@ $\boxed{O(N^2)}$.
 **Explanation:**  
 1. **Inner Loop Analysis:**  
    For each number in the array, the inner `while` loop computes the sum of its digits. On each iteration of the `while` loop, the value is divided by 10. Since the value is at most $ C $ initially, the number of iterations $ k $ required satisfies:
-   $$
-   10^k \le C,
-   $$
+   $$10^k \le C,$$
    which implies:
-   $$
-   k \le \log_{10} C.
-   $$
+   $$k \le \log_{10} C.$$
    Therefore, the time complexity of the inner loop is $O(\log C)$.
 
 2. **Overall Complexity:**  
