@@ -195,18 +195,22 @@ $\boxed{O(N^2)}$
 **Explanation:**  
 1. **Inner Loop Analysis:**  
    For each number in the array, the inner `while` loop computes the sum of its digits. On each iteration of the `while` loop, the value is divided by 10. Since the value is at most $ C $ initially, the number of iterations $ k $ required satisfies:  
+     
    $$10^k \le C,$$  
+     
    which implies:  
+     
    $$k \le \log_{10} C.$$  
+     
    Therefore, the time complexity of the inner loop is $O(\log C)$.
 
 2. **Overall Complexity:**  
-   Since the inner loop is executed independently for each of the $ N $ elements in the array, the overall time complexity of the function is:
-   $$
-   O\left(N \cdot \log C\right).
-   $$
+   Since the inner loop is executed independently for each of the $ N $ elements in the array, the overall time complexity of the function is:  
+     
+   $$O\left(N \cdot \log C\right).$$  
+
 > **Final Answer:**  
-> $\boxed{O(N \log C)}$.
+> $\boxed{O(N \log C)}$
 
 </div>
 </details>
