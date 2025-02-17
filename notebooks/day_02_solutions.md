@@ -300,7 +300,7 @@ $\boxed{O(N^2)}$
 ### Exercise 6: Prime Factors Complexity 📊
 
 > **Question:**  
-> Evaluate the time complexity of the following function that computes the prime factors of a number $ x $. Let $ C $ be an upper bound on $ x $ (i.e., initially, $ x \le C $).
+> Evaluate the time complexity of the following function that computes the prime factors of a number $x$. Let $C$ be an upper bound on $x$ (i.e., initially, $x \le C$).
 
 > ```cpp
 > #include <vector>
@@ -355,14 +355,10 @@ $\boxed{O(N^2)}$
    Each time the inner loop is executed, the value $x$ is divisible by $i$ and is divided by $i$. Because $i \ge 2$, every execution of the inner loop reduces $x$ by at least a factor of 2. Therefore, the total number of iterations of the inner loop over the entire function is at most $O(\log C)$.
 
 3. **Overall Complexity:**  
-   The dominant work comes from the outer loop, which is $O(C)$, while the inner loop contributes only an additional $O(\log C)$ iterations in total. Since $O(C)$ grows asymptotically faster than $O(\log C)$, the overall time complexity is:
-
-   $$
-   O(C) + O(\log C) = O(C).
-   $$
-
-
-
+   The dominant work comes from the outer loop, which is $O(C)$, while the inner loop contributes only an additional $O(\log C)$ iterations in total. Since $O(C)$ grows asymptotically faster than $O(\log C)$, the overall time complexity is:  
+     
+   $$O(C) + O(\log C) = O(C).$$
+  
 **Final Answer:**  
 $\boxed{O(C)}$
 
@@ -441,10 +437,9 @@ This problem presents the code for sorting an array of non-negative integers usi
    - The counting loop: $O(N)$  
    - The reconstruction loop: $O(C)$ (outer loop) + $O(N)$ (total inner loop iterations)  
      
-   Adding these up, the overall time complexity is:
-   $$
-   O(N) + O(N) + O(C) = O(N + C).
-   $$
+   Adding these up, the overall time complexity is:  
+     
+   $$O(N) + O(N) + O(C) = O(N + C).$$  
 
 **Final Answer:**  
 $\boxed{O(N + C)}$
@@ -511,20 +506,18 @@ $\boxed{O(N + C)}$
    - **Second iteration:** the inner loop runs \(N/2\) times.
    - **Third iteration:** it runs \(N/4\) times, and so on.
 
-   The total number of iterations of the inner loop across all iterations of the outer loop is:
-   $$
-   N + \frac{N}{2} + \frac{N}{4} + \dots + \frac{N}{2^k},
-   $$
+   The total number of iterations of the inner loop across all iterations of the outer loop is:  
+   
+   $$N + \frac{N}{2} + \frac{N}{4} + \dots + \frac{N}{2^k},$$
+   
    where $k = \log_2 N$. This geometric series sums to at most:
-   $$
-   N \cdot \left(1 + \frac{1}{2} + \frac{1}{4} + \dots\right) \le 2N.
-   $$
+   
+   $$N \cdot \left(1 + \frac{1}{2} + \frac{1}{4} + \dots\right) \le 2N.$$
 
 3. **Total Time Complexity:**  
-   Since the overall work done is the sum of the inner loop iterations, the total time complexity is:
-   $$
-   O(N) + O\left(\frac{N}{2}\right) + O\left(\frac{N}{4}\right) + \dots = O(2N) = O(N).
-   $$
+   Since the overall work done is the sum of the inner loop iterations, the total time complexity is:  
+     
+   $$O(N) + O\left(\frac{N}{2}\right) + O\left(\frac{N}{4}\right) + \dots = O(2N) = O(N).$$  
 
 **Final Answer:**  
 $\boxed{O(N)}$
@@ -560,20 +553,20 @@ $\boxed{O(N)}$
    When adding an element, after appending it, we sort the array. At the $K$-th insertion (for $K$ from 1 to $N$), the array size is $K$, so the sorting operation takes $O(K \log K)$ time.
 
 3. **Total Time Over $N$ Insertions:**  
-   We perform this sorting step for every value of $K$ from 1 up to $N$. Therefore, the overall running time is:
-   $$
-   O\left(\sum_{K=1}^{N} K \log K\right).
-   $$
+   We perform this sorting step for every value of $K$ from 1 up to $N$. Therefore, the overall running time is:  
+   
+   $$O\left(\sum_{K=1}^{N} K \log K\right).$$  
+
 
 4. **Estimating the Sum:**  
    We can lower-bound the sum by considering the terms for $K$ from $N/2$ to $N$:
-   $$
-   \sum_{K=1}^{N} K \log K \ge \sum_{K=\frac{N}{2}}^{N} K \log K.
-   $$
-   In the range $K \in \left[\frac{N}{2}, N\right]$, each $K$ is at least $\frac{N}{2}$ and $\log K$ is at least $\log \frac{N}{2}$. There are approximately $\frac{N}{2}$ such terms, so:
-   $$
-   \sum_{K=\frac{N}{2}}^{N} K \log K \ge \frac{N}{2} \cdot \frac{N}{2} \cdot \log\left(\frac{N}{2}\right) = O\left(N^2 \log N\right).
-   $$
+
+   $$\sum_{K=1}^{N} K \log K \ge \sum_{K=\frac{N}{2}}^{N} K \log K.$$
+  
+   In the range $K \in \left[\frac{N}{2}, N\right]$, each $K$ is at least $\frac{N}{2}$ and $\log K$ is at least $\log \frac{N}{2}$. There are approximately $\frac{N}{2}$ such terms, so:  
+
+   $$\sum_{K=\frac{N}{2}}^{N} K \log K \ge \frac{N}{2} \cdot \frac{N}{2} \cdot \log\left(\frac{N}{2}\right) = O\left(N^2 \log N\right).$$  
+ 
 
 **Final Answer:**  
 $\boxed{O(N^2 \log N)}$
@@ -601,8 +594,6 @@ $\boxed{O(N^2 \log N)}$
 **Explanation:**  
 
 
-
-
 1. **Insertion Sort on a Nearly Sorted Array:**  
    After each addition, we sort the array using insertion sort. When the array is already sorted except for the new element at the end, insertion sort works in linear time, i.e., $O(K)$ for an array of size $K$.
 
@@ -610,10 +601,9 @@ $\boxed{O(N^2 \log N)}$
    Suppose that after $K-1$ insertions the array is sorted. When we add the $K$-th element, the array has $K$ elements and the insertion sort takes $O(K)$ time in the worst case.
 
 3. **Total Cost Over $N$ Insertions:**  
-   We perform this sorting step for each insertion from $K = 1$ to $N$. The total time is:
-   $$
-   O(1) + O(2) + \dots + O(N) = O\left(\sum_{K=1}^{N} K\right) = O\left(\frac{N(N+1)}{2}\right) = O(N^2).
-   $$
+   We perform this sorting step for each insertion from $K = 1$ to $N$. The total time is:  
+
+   $$O(1) + O(2) + \dots + O(N) = O\left(\sum_{K=1}^{N} K\right) = O\left(\frac{N(N+1)}{2}\right) = O(N^2).$$
 
 
 **Final Answer:**  
