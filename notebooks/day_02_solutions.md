@@ -135,10 +135,10 @@ Since none of the provided choices ($\log N$, $N$, $N^2$, $2^N$, $N \log N$) mat
 <div markdown="1">
 
 **Explanation:**  
-In the worst-case scenario the pivot always partitions the array into sizes 0 and $N-1$. In one of the worst cases, the pivot chosen is always the smallest element in the array. After partitioning an array of size $N$, the recurrence becomes:
-$$T(N) = T(N-1) + O(N)$$
-Summing this over $N$ leads to:
-$$O(N) + O(N-1) + \dots + O(1) = O(N^2).$$
+In the worst-case scenario the pivot always partitions the array into sizes 0 and $N-1$. In one of the worst cases, the pivot chosen is always the smallest element in the array. After partitioning an array of size $N$, the recurrence becomes:  
+$$T(N) = T(N-1) + O(N)$$  
+Summing this over $N$ leads to:  
+$$O(N) + O(N-1) + \dots + O(1) = O(N^2).$$  
 
 **Final Answer:**  
 $\boxed{O(N^2)}$
