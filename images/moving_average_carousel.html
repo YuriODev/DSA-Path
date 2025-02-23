@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Moving Average Algorithm Steps</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Updated to include more modern fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h2 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .visualization-container {
+      position: relative;
+      width: 448px;
+      height: 320px;
+      margin: 40px auto;
+    }
+    .cell {
+      width: 64px;
+      height: 64px;
+      background-color: #d8eeee;
+      border-right: 1px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem; /* Increased font size */
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+    .bottom-cell {
+      width: 64px;
+      height: 64px;
+      background-color: #d8eeee;
+      border-right: 1px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem; /* Increased font size */
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      color: #2c3e50;
+      transition: all 0.3s ease;
+    }
+    .step-text {
+      width: 448px;
+      margin: 40px auto;
+      padding: 15px 30px;
+      font-size: 1.3rem;
+      color: #2c3e50;
+      text-align: center;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      font-family: 'Inter', sans-serif;
+    }
+    .nav-buttons {
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .nav-button {
+      padding: 15px;
+      font-size: 24px;
+      border: none;
+      background-color: rgba(0, 0, 0, 0.1);
+      color: #2c3e50;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-button:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+    .nav-button:hover:not(:disabled) {
+      background-color: rgba(0, 0, 0, 0.2);
+      color: #34495e;
+    }
+    .moving-elements {
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+    .fraction {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.5rem;
+      color: #2c3e50;
+      text-align: center;
+    }
+    .fraction-line {
+      width: 7rem;
+      border-top: 2px solid #2c3e50;
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Moving Average Algorithm Steps</h2>  
+  <div style="position: relative;">
+    <div class="visualization-container">
+      <!-- Static top row -->
+      <div style="display: flex;">
+        <div class="cell">4</div>
+        <div class="cell">3</div>
+        <div class="cell">8</div>
+        <div class="cell">1</div>
+        <div class="cell">5</div>
+        <div class="cell">6</div>
+        <div class="cell">3</div>
+      </div>
+
+      <!-- Moving elements container -->
+      <div id="movingElements" class="moving-elements">
+        <!-- Bracket -->
+        <!-- <img src="bracket.png"  -->
+        <!-- <img src="../images/bracket.png"  -->
+        <!-- <img src="03_03_words.png"  -->
+        <img src="https://www.pngkit.com/png/full/100-1005823_open-thin-curly-bracket-png.png" 
+             alt="Curly Bracket" 
+             style="position: absolute; top: 10px; left: -86px; width: 172px; height: 32px;"/>
+        
+        <!-- Fraction -->
+        <div class="fraction" style="position: absolute; top: 50px; transform: translateX(-50%);
+                    display: flex; flex-direction: column; align-items: center;">
+          <div id="fractionTop" style="font-weight: 500;">4 + 3 + 8</div>
+          <div class="fraction-line"></div>
+          <div id="fractionBottom" style="font-weight: 500;">3</div>
+        </div>
+
+        <!-- Arrow -->
+        <svg width="30" height="80" style="position: absolute; top: 120px; transform: translateX(-50%);">
+          <line x1="15" y1="0" x2="15" y2="70" stroke="#2c3e50" stroke-width="2" stroke-dasharray="4,4"></line>
+          <polygon points="10,70 20,70 15,80" fill="#2c3e50"></polygon>
+        </svg>
+      </div>
+
+      <!-- Static bottom row container -->
+      <div style="position: absolute; top: 280px; left: 64px; display: flex; width: 320px;">
+        <div id="result1" class="bottom-cell">5</div>
+        <div id="result2" class="bottom-cell"></div>
+        <div id="result3" class="bottom-cell"></div>
+        <div id="result4" class="bottom-cell"></div>
+        <div id="result5" class="bottom-cell"></div>
+      </div>
+    </div>
+
+    <!-- Navigation buttons moved outside visualization container but inside relative container -->
+    <div class="nav-buttons">
+      <button id="prevBtn" class="nav-button">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </button>
+      <button id="nextBtn" class="nav-button">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="step-text" id="stepText">
+    Step 1: Calculate average of first three numbers (4, 3, 8)
+  </div>
+</div>
+
+<script>
+const steps = [
+  {
+    left: 96,  // Adjusted positions
+    fraction: ['4 + 3 + 8', '3'],
+    results: ['5', '', '', '', ''],
+    text: 'Step 1: Calculate average of first three numbers (4, 3, 8)'
+  },
+  {
+    left: 160,
+    fraction: ['3 + 8 + 1', '3'],
+    results: ['5', '4', '', '', ''],
+    text: 'Step 2: Calculate average of numbers 2-4 (3, 8, 1)'
+  },
+  {
+    left: 224,
+    fraction: ['8 + 1 + 5', '3'],
+    results: ['5', '4', '4.67', '', ''],
+    text: 'Step 3: Calculate average of numbers 3-5 (8, 1, 5)'
+  },
+  {
+    left: 288,
+    fraction: ['1 + 5 + 6', '3'],
+    results: ['5', '4', '4.67', '4', ''],
+    text: 'Step 4: Calculate average of numbers 4-6 (1, 5, 6)'
+  },
+  {
+    left: 352,
+    fraction: ['5 + 6 + 3', '3'],
+    results: ['5', '4', '4.67', '4', '4.67'],
+    text: 'Step 5: Calculate average of last three numbers (5, 6, 3)'
+  }
+];
+
+let currentStep = 0;
+
+function updateStep(step) {
+  const movingElements = document.getElementById('movingElements');
+  movingElements.style.left = `${steps[step].left}px`;
+  
+  document.getElementById('fractionTop').textContent = steps[step].fraction[0];
+  document.getElementById('fractionBottom').textContent = steps[step].fraction[1];
+  
+  steps[step].results.forEach((result, i) => {
+    document.getElementById(`result${i + 1}`).textContent = result;
+  });
+  
+  document.getElementById('stepText').textContent = steps[step].text;
+  
+  document.getElementById('prevBtn').disabled = step === 0;
+  document.getElementById('nextBtn').disabled = step === steps.length - 1;
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+  if (currentStep > 0) {
+    currentStep--;
+    updateStep(currentStep);
+  }
+});
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  if (currentStep < steps.length - 1) {
+    currentStep++;
+    updateStep(currentStep);
+  }
+});
+
+// Initialize first step
+updateStep(0);
+</script>
+
+</body>
+</html> 
