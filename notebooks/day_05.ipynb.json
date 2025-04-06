@@ -1,0 +1,929 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "id": "f06bb103",
+      "metadata": {},
+      "source": [
+        "<style>\n",
+        "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600&display=swap');\n",
+        "\n",
+        "body {\n",
+        "    font-family: 'Inter', sans-serif;\n",
+        "}\n",
+        "\n",
+        "h1, h2, h3 {\n",
+        "    font-family: 'Poppins', sans-serif;\n",
+        "    font-weight: 600;\n",
+        "    color: #2c3e50;\n",
+        "}\n",
+        "\n",
+        "p, li {\n",
+        "    font-family: 'Inter', sans-serif;\n",
+        "    font-weight: 400;\n",
+        "    color: #2c3e50;\n",
+        "    font-size: 1.1rem;\n",
+        "    line-height: 1.6;\n",
+        "}\n",
+        "\n",
+        "strong {\n",
+        "    font-weight: 500;\n",
+        "    color: #2c3e50;\n",
+        "}\n",
+        "</style>\n",
+        "\n",
+        "# Day 5: Iterative Array/List Algorithms – Part I 🚀\n",
+        "\n",
+        "In this lesson, we explore several iterative algorithms on arrays/lists. We'll cover:\n",
+        "\n",
+        "- Linear Search 🔍\n",
+        "- Iterative Binary Search 🔎\n",
+        "- Prefix Sum Array ➕\n",
+        "- Sliding Window Technique 📐\n",
+        "- **Moving Average Technique** 📊\n",
+        "- Two Pointers Technique 🤝\n",
+        "- Kadane's Algorithm ⚡\n",
+        "- Boyer–Moore Majority Vote Algorithm 👑\n",
+        "\n",
+        "Each section includes time and space complexity details, code examples, and detailed explanations."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "d20d33b6",
+      "metadata": {},
+      "source": [
+        "## Objectives 🎯\n",
+        "\n",
+        "<div style=\"font-family: 'Inter', sans-serif; font-size: 1.1rem; line-height: 1.6; color: #2c3e50;\">\n",
+        "\n",
+        "- Understand basic iterative techniques on arrays/lists.\n",
+        "- Analyze time complexity (e.g., O(n), O(log n)) and space complexity for each algorithm.\n",
+        "- Learn methods for solving subarray, search, and majority element problems.\n",
+        "- Get hands-on practice with examples and exercises.\n",
+        "- Explore the moving average technique as an application of the sliding window approach.\n",
+        "- Have fun coding! 😄\n",
+        "\n",
+        "</div>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "722b6e76",
+      "metadata": {},
+      "source": [
+        "## Table of Contents 📖\n",
+        "\n",
+        "1. [Linear Search](#linear-search)\n",
+        "2. [Iterative Binary Search](#iterative-binary-search)\n",
+        "3. [Prefix Sum Array](#prefix-sum-array)\n",
+        "4. [Sliding Window Technique](#sliding-window-technique)\n",
+        "5. [Moving Average Technique](#moving-average-technique)\n",
+        "6. [Two Pointers Technique](#two-pointers-technique)\n",
+        "7. [Kadane's Algorithm](#kadane's-algorithm)\n",
+        "8. [Boyer–Moore Majority Vote Algorithm](#boyer–moore-majority-vote-algorithm)\n",
+        "9. [Exercises](#exercises)\n",
+        "10. [Final Summary](#final-summary)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "efcad125",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "import numpy as np\n",
+        "import matplotlib.pyplot as plt\n",
+        "\n",
+        "# Set seed for reproducibility\n",
+        "np.random.seed(0)\n",
+        "\n",
+        "# Define total days and subdivisions per day\n",
+        "days = 1800\n",
+        "subdivisions = 1\n",
+        "\n",
+        "# Lists to store time and temperature data\n",
+        "times = []\n",
+        "temperatures = []\n",
+        "\n",
+        "# Generate data\n",
+        "for day in range(days):\n",
+        "    # Seasonal pattern: 1 full cycle every 600 days, amplitude ±15\n",
+        "    seasonal_phase = (day / 600) * 2 * np.pi\n",
+        "    seasonal_temp = np.sin(seasonal_phase) * 15\n",
+        "    \n",
+        "    # Generate subdivisions for each day\n",
+        "    for quarter in range(subdivisions):\n",
+        "        # Lower frequency short-term variation (fewer oscillations)\n",
+        "        short_term_variation = np.sin(day * 0.07 + 2 * quarter) * 3 - 15\n",
+        "        # Uniform random noise between -1 and 1\n",
+        "        noise = np.random.uniform(-2, 5)\n",
+        "        \n",
+        "        times.append(day + quarter / subdivisions)\n",
+        "        temperatures.append(seasonal_temp + short_term_variation + noise)\n",
+        "\n",
+        "# Plotting the data\n",
+        "plt.figure(figsize=(12, 6))\n",
+        "plt.plot(times, temperatures, color='#6cc998', linewidth=1)\n",
+        "plt.axhline(0, color='red', linewidth=1, label=\"0 °C Reference\")\n",
+        "plt.title(\"Maximum Temperature on Mars\")\n",
+        "plt.xlabel(\"Martian Sol\")\n",
+        "plt.ylabel(\"Maximum Temperature (°C)\")\n",
+        "plt.grid(True)\n",
+        "plt.legend()\n",
+        "plt.tight_layout()\n",
+        "plt.show()\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "e03cd802",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "import datetime\n",
+        "import matplotlib.dates as mdates\n",
+        "\n",
+        "# 1) Create a second-level date range for one full week\n",
+        "start = datetime.datetime(2025, 2, 3, 9, 0)  # Monday at 09:00\n",
+        "end = start + datetime.timedelta(days=7)     \n",
+        "time_index = pd.date_range(start, end, freq='s')  # per-second data\n",
+        "\n",
+        "# 2) Extract day_of_week (Monday=0, Sunday=6) and hour_of_day arrays\n",
+        "day_of_week = time_index.dayofweek  # array of integers 0..6\n",
+        "hour_of_day = time_index.hour       # array of integers 0..23\n",
+        "\n",
+        "# 3) Define the target peak for each day of the week\n",
+        "#    Index: 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun\n",
+        "daily_peaks = [650, 800, 600, 550, 300, 350, 400]\n",
+        "\n",
+        "# 4) Create a daily cycle that peaks around midday (hour=12)\n",
+        "#    The sine function produces values from -1 to +1. At hour 12 the value is +1.\n",
+        "daily_cycle = np.sin(2 * np.pi * (hour_of_day - 12) / 24)\n",
+        "\n",
+        "# 5) Generate request values for each timestamp\n",
+        "requests = []\n",
+        "for i, timestamp in enumerate(time_index):\n",
+        "    dow = day_of_week[i]  # day index 0..6\n",
+        "    peak = daily_peaks[dow]\n",
+        "    \n",
+        "    # Convert daily_cycle from [-1, +1] to a positive scale (0 to ~1.33)\n",
+        "    value = peak * (daily_cycle[i] + 1) / 1.5\n",
+        "    \n",
+        "    # Add random noise (10% of the peak as standard deviation)\n",
+        "    noise = np.random.normal(0, peak * 0.1)\n",
+        "    value += noise\n",
+        "    \n",
+        "    # Clamp negative values to zero\n",
+        "    if value < 0:\n",
+        "        value = 0\n",
+        "    \n",
+        "    requests.append(value)\n",
+        "\n",
+        "# 6) Create a DataFrame from the generated data\n",
+        "df = pd.DataFrame({'requests': requests}, index=time_index)\n",
+        "\n",
+        "# 7) Plot the data\n",
+        "plt.figure(figsize=(12, 6))\n",
+        "plt.plot(df.index, df['requests'], color='#6cc998', linewidth=1)\n",
+        "plt.title(\"Requests Over a Week with Distinct Daily Peaks\")\n",
+        "plt.xlabel(\"Time\")\n",
+        "plt.ylabel(\"Requests\")\n",
+        "plt.grid(True)\n",
+        "\n",
+        "# Replace x-axis labels with day names using a DateFormatter\n",
+        "plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%A'))\n",
+        "plt.gcf().autofmt_xdate()  # Auto-format the x-axis labels for better readability\n",
+        "\n",
+        "plt.show()\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "a8cffe91",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "import datetime\n",
+        "import matplotlib.dates as mdates\n",
+        "\n",
+        "# 1) Create a second-level date range for one full week\n",
+        "start = datetime.datetime(2025, 2, 3, 9, 0)  # Monday at 09:00\n",
+        "end = start + datetime.timedelta(days=7)     \n",
+        "time_index = pd.date_range(start, end, freq='s', inclusive='left')\n",
+        "\n",
+        "# 2) Extract day_of_week and hour_of_day arrays\n",
+        "day_of_week = time_index.dayofweek  # Monday=0, ... Sunday=6\n",
+        "hour_of_day = time_index.hour       # array of integers 0..23\n",
+        "\n",
+        "# 3) Define the target peak for each day of the week\n",
+        "#    Index: 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun\n",
+        "daily_peaks = [650, 800, 600, 550, 300, 350, 400]\n",
+        "\n",
+        "# 4) Create a daily cycle that peaks around midday (hour=12)\n",
+        "#    The sine function produces values from -1 to +1. At hour 12 the value is +1.\n",
+        "daily_cycle = np.sin(2 * np.pi * (hour_of_day - 12) / 24)\n",
+        "\n",
+        "# 5) Generate request values for each timestamp\n",
+        "requests = []\n",
+        "for i, timestamp in enumerate(time_index):\n",
+        "    dow = day_of_week[i]\n",
+        "    peak = daily_peaks[dow]\n",
+        "    \n",
+        "    # Scale the daily cycle from [-1, +1] to a positive range\n",
+        "    value = peak * (daily_cycle[i] + 1) / 1.5\n",
+        "    \n",
+        "    # Add random noise (10% of the peak as standard deviation)\n",
+        "    noise = np.random.normal(0, peak * 0.1)\n",
+        "    value += noise\n",
+        "    \n",
+        "    # Clamp negative values to zero\n",
+        "    if value < 0:\n",
+        "        value = 0\n",
+        "    \n",
+        "    requests.append(value)\n",
+        "\n",
+        "# 6) Create a DataFrame from the generated data\n",
+        "df = pd.DataFrame({'requests': requests}, index=time_index)\n",
+        "\n",
+        "# 7) Apply a moving average to smooth the data (window size: 300 seconds = 5 minutes)\n",
+        "window_size = 300\n",
+        "df['requests_smoothed'] = df['requests'].rolling(window=window_size, center=True).mean()\n",
+        "\n",
+        "# 8) Plot the smoothed data\n",
+        "plt.figure(figsize=(12, 6))\n",
+        "plt.plot(df.index, df['requests_smoothed'], color='#6cc998', linewidth=1)\n",
+        "plt.title(\"Smoothed Requests Over a Week (Moving Average)\")\n",
+        "plt.xlabel(\"Time\")\n",
+        "plt.ylabel(\"Requests (Smoothed)\")\n",
+        "plt.grid(True)\n",
+        "\n",
+        "# Format x-axis with day names\n",
+        "plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%A'))\n",
+        "plt.gcf().autofmt_xdate()  # Auto-format date labels for better readability\n",
+        "\n",
+        "plt.show()\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "f8f1f27e",
+      "metadata": {
+        "vscode": {
+          "languageId": "html"
+        }
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "973ada39",
+      "metadata": {
+        "vscode": {
+          "languageId": "html"
+        }
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "06f20f38",
+      "metadata": {
+        "vscode": {
+          "languageId": "html"
+        }
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "markdown",
+      "id": "dbc9e4f1",
+      "metadata": {},
+      "source": [
+        "## 1. Linear Search 🔍\n",
+        "\n",
+        "Linear search scans the list element by element to find a target. \n",
+        "\n",
+        "**Time Complexity:** O(n) in the worst case\n",
+        "**Space Complexity:** O(1) extra space\n",
+        "\n",
+        "Let's implement a basic linear search:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "36e132b1",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "def linear_search(lst, target):\n",
+        "    \"\"\"Return the index of target in lst using linear search, or -1 if not found.\"\"\"\n",
+        "    for i, value in enumerate(lst):\n",
+        "        if value == target:\n",
+        "            return i\n",
+        "    return -1\n",
+        "\n",
+        "# Example usage\n",
+        "sample_list = [5, 3, 7, 1, 9]\n",
+        "result = linear_search(sample_list, 7)\n",
+        "print(\"Linear Search Result:\", result)  # Expected output: 2"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "cea95d52",
+      "metadata": {},
+      "source": [
+        "### Explanation of Linear Search Code\n",
+        "\n",
+        "1. We iterate over each element in the list using `enumerate`, which gives both the index and the value. \n",
+        "2. If the current element equals the target, we return its index immediately.\n",
+        "3. If we finish the loop without finding the target, we return `-1` to indicate that the target is not present.\n",
+        "\n",
+        "Since we only use a few variables, the extra space is O(1)."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "dacc7305",
+      "metadata": {},
+      "source": [
+        "### Exercises for Linear Search\n",
+        "\n",
+        "- Implement the basic linear search (as shown above).\n",
+        "- Modify the function to return all indices where the target appears.\n",
+        "- Analyze and discuss the worst-case scenario."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "34792477",
+      "metadata": {},
+      "source": [
+        "## 2. Iterative Binary Search 🔎\n",
+        "\n",
+        "Binary search is used on a **sorted** list. It repeatedly divides the search interval in half until the target is found or the interval is empty.\n",
+        "\n",
+        "**Time Complexity:** O(log n)\n",
+        "**Space Complexity:** O(1) extra space\n",
+        "\n",
+        "Let's implement an iterative binary search that also returns the insertion index if the target is not found:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "5005fba0",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "def binary_search(lst, target):\n",
+        "    \"\"\"Return the index of target in a sorted lst using iterative binary search, or the insertion index if not found.\"\"\"\n",
+        "    low, high = 0, len(lst) - 1\n",
+        "    while low <= high:\n",
+        "        mid = (low + high) // 2\n",
+        "        if lst[mid] == target:\n",
+        "            return mid\n",
+        "        elif lst[mid] < target:\n",
+        "            low = mid + 1\n",
+        "        else:\n",
+        "            high = mid - 1\n",
+        "    return low  # insertion index\n",
+        "\n",
+        "# Example usage\n",
+        "sorted_list = [1, 3, 5, 7, 9]\n",
+        "result = binary_search(sorted_list, 6)\n",
+        "print(\"Binary Search Result (Insertion Index):\", result)  # Expected output: 3"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "1d7621a8",
+      "metadata": {},
+      "source": [
+        "### Explanation of Iterative Binary Search\n",
+        "\n",
+        "1. We initialize `low` and `high` to the beginning and end of the list.\n",
+        "2. In each iteration, we calculate the middle index `mid`.\n",
+        "3. If `lst[mid]` equals the target, we return `mid`.\n",
+        "4. If the target is greater than `lst[mid]`, we discard the left half by setting `low = mid + 1`.\n",
+        "5. Otherwise, we discard the right half by setting `high = mid - 1`.\n",
+        "6. If the target is not found, we return `low` as the insertion index.\n",
+        "\n",
+        "Only a few pointers are used, keeping the extra space at O(1)."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "19874f9e",
+      "metadata": {},
+      "source": [
+        "### Exercises for Binary Search\n",
+        "\n",
+        "- Implement the iterative binary search (as shown above).\n",
+        "- Modify it to return the insertion index when the target is not found.\n",
+        "- Compare its performance with linear search on sorted lists."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "e09659d3",
+      "metadata": {},
+      "source": [
+        "## 3. Prefix Sum Array ➕\n",
+        "\n",
+        "A prefix sum array stores the cumulative sum of the list's elements. After O(n) preprocessing, range sum queries can be answered in O(1) time.\n",
+        "\n",
+        "**Time Complexity:**\n",
+        "- Preprocessing: O(n)\n",
+        "- Query: O(1)\n",
+        "\n",
+        "**Space Complexity:** O(n) extra space (for storing the prefix sums)\n",
+        "\n",
+        "Let's build a prefix sum array and use it to answer range sum queries:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "af6ee443",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "def build_prefix_sum(lst):\n",
+        "    \"\"\"Return the prefix sum array for lst.\"\"\"\n",
+        "    prefix = [0] * (len(lst) + 1)\n",
+        "    for i, num in enumerate(lst):\n",
+        "        prefix[i+1] = prefix[i] + num\n",
+        "    return prefix\n",
+        "\n",
+        "def range_sum(prefix, i, j):\n",
+        "    \"\"\"Return the sum of lst[i:j] using the prefix sum array.\"\"\"\n",
+        "    return prefix[j] - prefix[i]\n",
+        "\n",
+        "# Example usage\n",
+        "lst = [2, 4, 6, 8, 10]\n",
+        "prefix = build_prefix_sum(lst)\n",
+        "print(\"Range Sum (1,4):\", range_sum(prefix, 1, 4))  # Expected output: 4+6+8 = 18"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "7d9685d1",
+      "metadata": {},
+      "source": [
+        "### Explanation of Prefix Sum Array\n",
+        "\n",
+        "1. The function `build_prefix_sum` creates an array `prefix` where each element at index `i+1` is the sum of all elements up to index `i` in the original list.\n",
+        "2. The `range_sum` function then returns the sum of any subarray `lst[i:j]` by subtracting the prefix sum at `i` from that at `j`.\n",
+        "\n",
+        "This method requires O(n) extra space to store the prefix sums."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "d100fab5",
+      "metadata": {},
+      "source": [
+        "### Exercises for Prefix Sum\n",
+        "\n",
+        "- Build a prefix sum array for a given list.\n",
+        "- Use it to answer multiple range sum queries efficiently.\n",
+        "- Discuss the trade-offs in terms of space and time."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "da4e9678",
+      "metadata": {},
+      "source": [
+        "## 4. Sliding Window Technique 📐\n",
+        "\n",
+        "The sliding window technique is used to solve problems involving contiguous subarrays. For example, finding the maximum sum of any contiguous subarray of fixed length.\n",
+        "\n",
+        "**Time Complexity:** O(n)\n",
+        "**Space Complexity:** O(1) extra space\n",
+        "\n",
+        "Let's implement a sliding window algorithm to find the maximum sum of any contiguous subarray of length `k`:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "1a40038b",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "def sliding_window_max_sum(lst, k):\n",
+        "    \"\"\"Return the maximum sum of any contiguous subarray of length k.\"\"\"\n",
+        "    if len(lst) < k:\n",
+        "        return None\n",
+        "    current_sum = sum(lst[:k])\n",
+        "    max_sum = current_sum\n",
+        "    for i in range(k, len(lst)):\n",
+        "        current_sum += lst[i] - lst[i - k]\n",
+        "        max_sum = max(max_sum, current_sum)\n",
+        "    return max_sum\n",
+        "\n",
+        "# Example usage\n",
+        "lst = [1, 3, -1, -3, 5, 3, 6, 7]\n",
+        "print(\"Sliding Window Max Sum:\", sliding_window_max_sum(lst, 3))"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "b0fa6c1e",
+      "metadata": {},
+      "source": [
+        "### Explanation of Sliding Window Technique\n",
+        "\n",
+        "1. We first calculate the sum of the initial window of size `k`.\n",
+        "2. Then, as the window slides forward by one element, we add the new element and subtract the element that is no longer in the window.\n",
+        "3. We keep track of the maximum sum encountered.\n",
+        "\n",
+        "This method uses constant extra space (O(1)) since it only stores a few variables."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "a404d4f4",
+      "metadata": {},
+      "source": [
+        "### Exercises for Sliding Window\n",
+        "\n",
+        "- Compute moving averages for a list using the sliding window technique (see next section).\n",
+        "- Find the subarray of length `k` with the minimum sum.\n",
+        "- Adapt the technique to find the longest subarray that meets a given condition."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "0f92dbc7",
+      "metadata": {},
+      "source": [
+        "## 5. Moving Average Technique 📊\n",
+        "\n",
+        "The moving average technique is a direct application of the sliding window approach. It calculates the average of elements within a window as it moves across the list.\n",
+        "\n",
+        "**Time Complexity:** O(n)\n",
+        "**Space Complexity:** O(1) extra space\n",
+        "\n",
+        "Let's implement a function to compute the moving average of a list for a given window size:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "e972a9f0",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "def moving_average(lst, k):\n",
+        "    \"\"\"Return a list of moving averages for window size k.\"\"\"\n",
+        "    if len(lst) < k:\n",
+        "        return []\n",
+        "    averages = []\n",
+        "    window_sum = sum(lst[:k])\n",
+        "    averages.append(window_sum / k)\n",
+        "    for i in range(k, len(lst)):\n",
+        "        window_sum += lst[i] - lst[i - k]\n",
+        "        averages.append(window_sum / k)\n",
+        "    return averages\n",
+        "\n",
+        "# Example usage\n",
+        "lst = [10, 20, 30, 40, 50, 60]\n",
+        "print(\"Moving Averages:\", moving_average(lst, 3))  # Expected: [20.0, 30.0, 40.0, 50.0]"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "5553b895",
+      "metadata": {},
+      "source": [
+        "### Explanation of Moving Average Technique\n",
+        "\n",
+        "1. We first compute the sum of the first `k` elements and calculate the average.\n",
+        "2. Then, as the window slides, we update the window sum by adding the new element and subtracting the element that falls out of the window.\n",
+        "3. The average for each window is computed by dividing the window sum by `k`.\n",
+        "\n",
+        "This efficient approach works in O(n) time and uses O(1) extra space."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "06a4ea81",
+      "metadata": {},
+      "source": [
+        "### Exercises for Moving Average Technique\n",
+        "\n",
+        "- Implement a function to calculate the moving average (as shown above).\n",
+        "- Modify the function to handle edge cases (e.g., when `k` is greater than the list length).\n",
+        "- Compare the moving average technique with a brute-force approach."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "0fe236b7",
+      "metadata": {},
+      "source": [
+        "## 6. Two Pointers Technique 🤝\n",
+        "\n",
+        "The two pointers technique uses two indices to traverse the list simultaneously. It's often used to solve problems such as finding a pair that sums to a target or partitioning the list.\n",
+        "\n",
+        "**Time Complexity:** O(n)\n",
+        "**Space Complexity:** O(1) extra space\n",
+        "\n",
+        "Let's implement a function that finds two numbers in a sorted list that sum to a target:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "ba58c34d",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "def two_sum_sorted(lst, target):\n",
+        "    \"\"\"Return a tuple of two numbers from a sorted list that add up to target, or None if not found.\"\"\"\n",
+        "    left, right = 0, len(lst) - 1\n",
+        "    while left < right:\n",
+        "        current_sum = lst[left] + lst[right]\n",
+        "        if current_sum == target:\n",
+        "            return (lst[left], lst[right])\n",
+        "        elif current_sum < target:\n",
+        "            left += 1\n",
+        "        else:\n",
+        "            right -= 1\n",
+        "    return None\n",
+        "\n",
+        "# Example usage\n",
+        "sorted_lst = [1, 2, 3, 4, 6]\n",
+        "print(\"Two Sum Result:\", two_sum_sorted(sorted_lst, 6))  # Expected output: (2, 4)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "a5ceb1af",
+      "metadata": {},
+      "source": [
+        "### Explanation of Two Pointers Technique\n",
+        "\n",
+        "1. Two pointers (`left` and `right`) are initialized at the start and end of the sorted list.\n",
+        "2. We compute the sum of the elements at these pointers.\n",
+        "3. If the sum equals the target, we return the pair.\n",
+        "4. If the sum is less than the target, we move the `left` pointer to the right to increase the sum.\n",
+        "5. If the sum is greater, we move the `right` pointer to the left to decrease the sum.\n",
+        "\n",
+        "This approach uses constant extra space."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "016ca4d1",
+      "metadata": {},
+      "source": [
+        "### Exercises for Two Pointers\n",
+        "\n",
+        "- Find two numbers in a sorted array that sum to a given target (as above).\n",
+        "- Use two pointers to partition an array (e.g., separate even and odd numbers).\n",
+        "- Solve the \"container with most water\" problem using two pointers."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "cd61bd27",
+      "metadata": {},
+      "source": [
+        "## 7. Kadane's Algorithm ⚡\n",
+        "\n",
+        "Kadane's algorithm finds the maximum sum of a contiguous subarray in an efficient O(n) time.\n",
+        "\n",
+        "**Time Complexity:** O(n)\n",
+        "**Space Complexity:** O(1) extra space\n",
+        "\n",
+        "Let's implement Kadane's algorithm (with an option to return subarray indices):"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "47f65d93",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "def kadanes_algorithm(lst):\n",
+        "    \"\"\"Return the maximum subarray sum and the corresponding indices using Kadane's algorithm.\"\"\"\n",
+        "    max_current = max_global = lst[0]\n",
+        "    start = end = s = 0\n",
+        "    for i in range(1, len(lst)):\n",
+        "        if lst[i] > max_current + lst[i]:\n",
+        "            max_current = lst[i]\n",
+        "            s = i\n",
+        "        else:\n",
+        "            max_current += lst[i]\n",
+        "        if max_current > max_global:\n",
+        "            max_global = max_current\n",
+        "            start, end = s, i\n",
+        "    return max_global, (start, end)\n",
+        "\n",
+        "# Example usage\n",
+        "lst = [-2, -3, 4, -1, -2, 1, 5, -3]\n",
+        "print(\"Kadane's Result:\", kadanes_algorithm(lst))  # Expected output: (7, (2, 6))"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "5ceda22c",
+      "metadata": {},
+      "source": [
+        "### Explanation of Kadane's Algorithm\n",
+        "\n",
+        "1. We initialize `max_current` and `max_global` with the first element of the list.\n",
+        "2. As we iterate through the list, we decide whether to start a new subarray at the current element or continue the existing subarray by adding the current element.\n",
+        "3. Whenever `max_current` exceeds `max_global`, we update `max_global` and record the indices.\n",
+        "\n",
+        "This algorithm requires only constant extra space."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "b6fa11ba",
+      "metadata": {},
+      "source": [
+        "### Exercises for Kadane's Algorithm\n",
+        "\n",
+        "- Implement the basic Kadane's algorithm to return the maximum sum.\n",
+        "- Extend it to also return the starting and ending indices of the maximum subarray.\n",
+        "- Compare its performance with a brute-force approach for finding the maximum subarray sum."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "b2d0f48f",
+      "metadata": {},
+      "source": [
+        "## 8. Boyer–Moore Majority Vote Algorithm 👑\n",
+        "\n",
+        "This algorithm identifies the majority element (if one exists) by maintaining a candidate and a counter.\n",
+        "\n",
+        "**Time Complexity:** O(n)\n",
+        "**Space Complexity:** O(1) extra space\n",
+        "\n",
+        "Let's implement the Boyer–Moore algorithm:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "6e2a0782",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "def boyer_moore_majority(lst):\n",
+        "    \"\"\"Return the majority element in lst using the Boyer–Moore majority vote algorithm, or None if there is no majority.\"\"\"\n",
+        "    candidate = None\n",
+        "    count = 0\n",
+        "    for num in lst:\n",
+        "        if count == 0:\n",
+        "            candidate = num\n",
+        "            count = 1\n",
+        "        elif num == candidate:\n",
+        "            count += 1\n",
+        "        else:\n",
+        "            count -= 1\n",
+        "    # Verification step\n",
+        "    if lst.count(candidate) > len(lst) // 2:\n",
+        "        return candidate\n",
+        "    return None\n",
+        "\n",
+        "# Example usage\n",
+        "lst = [2, 2, 1, 1, 2, 2, 3]\n",
+        "print(\"Boyer–Moore Majority:\", boyer_moore_majority(lst))  # Expected output: 2"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "c7fa3f3b",
+      "metadata": {},
+      "source": [
+        "### Explanation of Boyer–Moore Majority Vote Algorithm\n",
+        "\n",
+        "1. We iterate through the list while maintaining a candidate and a count. \n",
+        "2. When the count reaches zero, we choose a new candidate.\n",
+        "3. After one pass, we perform a verification step to ensure that the candidate actually appears more than n/2 times.\n",
+        "\n",
+        "This algorithm uses only a few variables, resulting in O(1) extra space."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "092483c9",
+      "metadata": {},
+      "source": [
+        "### Exercises for Boyer–Moore\n",
+        "\n",
+        "- Implement the Boyer–Moore majority vote algorithm (as shown above).\n",
+        "- Add a verification step to confirm that the candidate is indeed a majority.\n",
+        "- Compare the performance of this approach with a dictionary-based frequency count method."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "7b02b745",
+      "metadata": {},
+      "source": [
+        "## Exercises 📝\n",
+        "\n",
+        "Each algorithm comes with 3 exercises to reinforce your understanding:\n",
+        "\n",
+        "- **Linear Search:** Implement the basic version, modify to return all indices, and analyze the worst-case scenario.\n",
+        "- **Binary Search:** Code an iterative version that returns the insertion index if not found and compare its performance with linear search.\n",
+        "- **Prefix Sum:** Build a prefix sum array and use it for range queries; discuss the space-time trade-offs.\n",
+        "- **Sliding Window:** Compute moving averages, find the minimum sum subarray, and adapt for the longest subarray meeting a condition.\n",
+        "- **Moving Average:** Implement the moving average function and compare it with a brute-force method.\n",
+        "- **Two Pointers:** Find two numbers that sum to a target in a sorted array, partition an array, and solve the \"container with most water\" problem.\n",
+        "- **Kadane's:** Implement the algorithm, extend it to return subarray indices, and compare its performance with a brute-force approach.\n",
+        "- **Boyer–Moore:** Implement the candidate selection with verification and compare with a dictionary frequency count."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "c4dcbddb",
+      "metadata": {},
+      "source": [
+        "## Final Summary 🏁\n",
+        "\n",
+        "Today we explored a variety of iterative algorithms on arrays/lists:\n",
+        "\n",
+        "- **Linear Search:** A simple O(n) scan with O(1) extra space.\n",
+        "- **Iterative Binary Search:** An O(log n) search on sorted arrays with O(1) extra space and insertion index support.\n",
+        "- **Prefix Sum Array:** Preprocessing technique with O(n) time and space for fast O(1) range queries.\n",
+        "- **Sliding Window Technique:** Efficient O(n) method for problems on contiguous subarrays using constant extra space.\n",
+        "- **Moving Average Technique:** A sliding window application to compute averages over subarrays in O(n) time.\n",
+        "- **Two Pointers Technique:** A versatile O(n) strategy for pair-sum and partitioning problems with O(1) extra space.\n",
+        "- **Kadane's Algorithm:** Finds the maximum subarray sum in O(n) time and O(1) space.\n",
+        "- **Boyer–Moore Majority Vote Algorithm:** Determines the majority element in O(n) time with O(1) extra space.\n",
+        "\n",
+        "Practice these algorithms with the provided examples and exercises to build a strong foundation in iterative techniques. Happy coding! 😄"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "f09a885e",
+      "metadata": {
+        "vscode": {
+          "languageId": "html"
+        }
+      },
+      "outputs": [],
+      "source": [
+        "import requests\n",
+        "from IPython.display import HTML\n",
+        "\n",
+        "url = \"https://raw.githubusercontent.com/YuriODev/DSA-Path/refs/heads/main/images/moving_average_carousel.html\"\n",
+        "response = requests.get(url)\n",
+        "html_content = response.text\n",
+        "\n",
+        "HTML(html_content)\n"
+      ]
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.13.0"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
